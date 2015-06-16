@@ -18,14 +18,14 @@
     })();" target="_self">Test jquery</a>
     <br>
     <a href="javascript:;" onclick="(function () {
+        var allText = '';
         var links = document.getElementsByTagName('a');
-        for (var i = 3; i < links.length; i++) {
-            var url = links[i].href;
-            $.get( url, { } , function( data ) {
-                alert(data);
-            });
-        }
-    })();" target='_self'>Test iteration</a>
+        for(var i = 3; i < links.length; i++) {
+            allText += $.ajax({ type: 'GET', url: links[i].href, async: false }).responseText;
+        };
+        alert('done');
+        window.open('data:text/json,' + encodeURIComponent(allText));
+    })();">Test iteration</a> <!-- MUST REMOVE target ATTRIBUTE -->
     <br>
     <a href='link1'>Link1</a>
     <br>

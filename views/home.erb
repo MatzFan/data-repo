@@ -77,6 +77,22 @@
         <tr>
           <td align="center" bgColor="#FAEDA4"><a href="javascript:;" onclick=
           "(function () {
+
+              function toDate(str) {
+                  var dayMthYear = str.split('/');
+                  return new Date(dayMthYear[2], dayMthYear[1] - 1, dayMthYear[0]);
+              }
+
+              function allDates() {
+                  var dates = [];
+                  var rows = document.getElementsByTagName('tr');
+                  for(var i = 1; i < rows.length; i++) { // omit title row
+                      var dateStr = rows[i].children[3].textContent;
+                      dates.push(toDate(dateStr));
+                  }
+                  return dates;
+              }
+
               function get(url) {
                   if (window.XMLHttpRequest) {
                       xmlhttp=new XMLHttpRequest(); // all except IE6
@@ -87,16 +103,20 @@
                   xmlhttp.send();
                   return xmlhttp.responseText;
               }
+
+              var datesArr = allDates(); // same length as allContracts array
               var allText = '';
-              var links = document.getElementsByTagName('a');
-              for(var i = 0; i < 2; i++) {
-                  var nameS = allContracts[i].nameSeq;
-                  var docS = allContracts[i].docSeq;
-                  var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
-                  url += // add asp.net stuff
-                  allText += get(url);
+              var fridays = 0;
+              for(var i = 0; i < allContracts.length; i++) {
+                  if(datesArr[i].getDay() == 5) { // Fridays only
+                      var nameS = allContracts[i].nameSeq;
+                      var docS = allContracts[i].docSeq;
+                      var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
+                      //allText += get(url);
+                      fridays += 1;
+                  }
               };
-              alert('done');
+              alert(fridays);
               if (window.XMLHttpRequest) {
                   window.open('data:text/json,' + encodeURIComponent(allText)); // all except IE6
               } else {

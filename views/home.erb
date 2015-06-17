@@ -87,7 +87,7 @@
                   var dates = [];
                   var rows = document.getElementsByTagName('tr');
                   for(var i = 1; i < rows.length; i++) { // omit title row
-                      var dateStr = rows[i].children[3].textContent;
+                      var dateStr = rows[i].children[3].innerText;
                       dates.push(toDate(dateStr));
                   }
                   return dates;
@@ -106,17 +106,14 @@
 
               var datesArr = allDates(); // same length as allContracts array
               var allText = '';
-              var fridays = 0;
               for(var i = 0; i < allContracts.length; i++) {
                   if(datesArr[i].getDay() == 5) { // Fridays only
                       var nameS = allContracts[i].nameSeq;
                       var docS = allContracts[i].docSeq;
                       var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
-                      //allText += get(url);
-                      fridays += 1;
+                      allText += get(url);
                   }
               };
-              alert(fridays);
               if (window.XMLHttpRequest) {
                   window.open('data:text/json,' + encodeURIComponent(allText)); // all except IE6
               } else {

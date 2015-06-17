@@ -9,14 +9,20 @@ get '/' do
   erb :home
 end
 
-get '/link1' do
-  erb :link1
+get '/detailstab' do
+  docSeq = params['docSeq']
+  puts docSeq
+  if docSeq == '2120154'
+    erb :link1
+  else
+    erb :link2
+  end
 end
 
-get '/link2' do
-  erb :link2
-end
+# get '/detailstab?tab=details&nameSeq=461382&docSeq=2120154' do
+#   erb :link1
+# end
 
-post '/upload' do
-  puts params[:test]
-end
+# get '/detailstab?tab=details&amp;nameSeq=2042291&amp;docSeq=2120156' do
+#   erb :link2
+# end

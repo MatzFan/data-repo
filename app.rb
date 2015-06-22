@@ -19,6 +19,10 @@ get '/detailstab' do
   end
 end
 
+get '/detailstab.aspx' do
+  'a details page'
+end
+
 # get '/detailstab?tab=details&nameSeq=461382&docSeq=2120154' do
 #   erb :link1
 # end

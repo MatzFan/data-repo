@@ -83,14 +83,30 @@
                   return new Date(dayMthYear[2], dayMthYear[1] - 1, dayMthYear[0]);
               }
 
-              function allDates() {
-                  var dates = [];
+              function rowTextAtColumn(colNum) {
+                  var array = [];
                   var rows = document.getElementsByTagName('tr');
                   for(var i = 1; i < rows.length; i++) { // omit title row
-                      var dateStr = rows[i].children[3].innerText;
-                      dates.push(toDate(dateStr));
+                      var string = rows[i].children[colNum].innerText;
+                      array.push(string);
                   }
-                  return dates;
+                  return array;
+              }
+
+              function dates(stringArr) {
+                  var array = [];
+                  for(var i = 0; i < stringArr.length; i++) { array.push(toDate(stringArr[i])); }
+                  return array;
+              }
+
+              function matches(regexArr, obj) {
+                  var i = regexArr.length;
+                  while (i--) {
+                     if (obj.match(regexArr[i])) {
+                         return true;
+                     }
+                  }
+                  return false;
               }
 
               function get(url) {
@@ -104,23 +120,28 @@
                   return xmlhttp.responseText;
               }
 
-              var datesArr = allDates(); // same length as allContracts array
+              var blacklist = [/^Act -.*/, /^Transaction.*/, /Will Registered/];
+
+              var datesArr = dates(rowTextAtColumn(3));
+              var docTypesArr = rowTextAtColumn(8);
               var allText = '';
+              var count = 0;
               for(var i = 0; i < allContracts.length; i++) {
-                  if(datesArr[i].getDay() == 5) { // Fridays only
+                  if(datesArr[i].getDay() == 5 && !matches(blacklist, docTypesArr[i])) {
+                      count += 1;
                       var nameS = allContracts[i].nameSeq;
                       var docS = allContracts[i].docSeq;
                       var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
                       allText += get(url);
                   }
               };
-              alert('done');
+              alert(count);
               if (window.XMLHttpRequest) {
                   window.open('data:text/json,' + encodeURIComponent(allText)); // all except IE6
               } else {
                   window.clipboardData.setData ('Text', allText); // IE only!
               }
-          })();" target="details">Show</a></td>
+          })();">Show</a></td>
           <td align="center" bgColor="#FAEDA4">
           </td>
           <td align="center" bgcolor="#FAEDA4">Table</td>

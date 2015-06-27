@@ -121,17 +121,18 @@
               }
 
               var blacklist = [/^Act -.*/, /^Transaction.*/, /Will Registered/];
-
+              var viewState = document.getElementById('__VIEWSTATE').value;
               var datesArr = dates(rowTextAtColumn(3));
               var docTypesArr = rowTextAtColumn(8);
               var allText = '';
               var count = 0;
-              for(var i = 0; i < allContracts.length; i++) {
+              for(var i = 0; i < 10; i++) { // allContracts.length
                   if(datesArr[i].getDay() == 5 && !matches(blacklist, docTypesArr[i])) {
                       count += 1;
                       var nameS = allContracts[i].nameSeq;
                       var docS = allContracts[i].docSeq;
-                      var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
+                      alert(viewState);
+                      var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS + '&__VIEWSTATE=' + viewState;
                       allText += get(url);
                   }
               };

@@ -120,6 +120,13 @@
                   return xmlhttp.responseText;
               }
 
+              function pasteTextInNewWindow(string) {
+                  var newWindow = window.open('');
+                  var body = newWindow.document.body;
+                  var text = 'innerText' in body ? 'innerText' : 'textContent';
+                  body[text] = string;
+              }
+
               var blacklist = [/^Act -.*/, /^Transaction.*/, /Will Registered/];
               var datesArr = dates(rowTextAtColumn(3));
               var docTypesArr = rowTextAtColumn(8);
@@ -136,7 +143,8 @@
               };
               alert(count);
               if (window.XMLHttpRequest) {
-                  window.open('data:text/json,' + encodeURIComponent(allText)); // all except IE6
+                  pasteTextInNewWindow(allText); // data uri has 2MB limit in Chrome, so use new windows :)
+                  //window.open('data:text/json,' + encodeURIComponent(allText));
               } else {
                   window.clipboardData.setData ('Text', allText); // IE only!
               }

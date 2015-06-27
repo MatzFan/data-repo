@@ -121,7 +121,6 @@
               }
 
               var blacklist = [/^Act -.*/, /^Transaction.*/, /Will Registered/];
-              var viewState = document.getElementById('__VIEWSTATE').value;
               var datesArr = dates(rowTextAtColumn(3));
               var docTypesArr = rowTextAtColumn(8);
               var allText = '';
@@ -131,8 +130,7 @@
                       count += 1;
                       var nameS = allContracts[i].nameSeq;
                       var docS = allContracts[i].docSeq;
-                      alert(viewState);
-                      var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS + '&__VIEWSTATE=' + viewState;
+                      var url = 'detailstab?tab=details&nameSeq=' + nameS + '&docSeq=' + docS;
                       allText += get(url);
                   }
               };
